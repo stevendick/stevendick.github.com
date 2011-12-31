@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[<insert witty blog title>]]></title>
+  <link href="http://stevendick.github.com/atom.xml" rel="self"/>
+  <link href="http://stevendick.github.com/"/>
+  <updated>2011-12-31T12:05:02+01:00</updated>
+  <id>http://stevendick.github.com/</id>
+  <author>
+    <name><![CDATA[Steven Dick]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Test Post]]></title>
+    <link href="http://stevendick.github.com/blog/2011/12/31/test-post/"/>
+    <updated>2011-12-31T11:34:00+01:00</updated>
+    <id>http://stevendick.github.com/blog/2011/12/31/test-post</id>
+    <content type="html"><![CDATA[<p>This is a test post.</p>
+]]></content>
+  </entry>
+  
+</feed>
