@@ -4,7 +4,7 @@
   <title><![CDATA[<insert witty blog title>]]></title>
   <link href="http://stevendick.github.com/atom.xml" rel="self"/>
   <link href="http://stevendick.github.com/"/>
-  <updated>2012-01-22T20:29:30+01:00</updated>
+  <updated>2012-01-22T20:34:05+01:00</updated>
   <id>http://stevendick.github.com/</id>
   <author>
     <name><![CDATA[Steven Dick]]></name>
@@ -136,15 +136,6 @@ test {
 <p>I link the HTML output in our <a href="http://jenkins-ci.org">Jenkins</a> build (I&#8217;m not aware of a Jenkins plug-in for JaCoCo yet).</p>
 
 <p>The Gradle build where I use JaCoCo is a multi-project build which gives us the added challenge of combining the results from each project into a single report, but that&#8217;s for another blog entry&#8230;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test Post]]></title>
-    <link href="http://stevendick.github.com/blog/2011/12/31/test-post/"/>
-    <updated>2011-12-31T11:34:00+01:00</updated>
-    <id>http://stevendick.github.com/blog/2011/12/31/test-post</id>
-    <content type="html"><![CDATA[<p>This is a test post.</p>
 ]]></content>
   </entry>
   
