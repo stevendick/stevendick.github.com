@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[<insert witty blog title>]]></title>
-  <link href="http://stevendick.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Gradle | <insert witty blog title>]]></title>
+  <link href="http://stevendick.github.com/blog/categories/gradle/atom.xml" rel="self"/>
   <link href="http://stevendick.github.com/"/>
   <updated>2012-01-22T20:29:30+01:00</updated>
   <id>http://stevendick.github.com/</id>
@@ -18,23 +18,23 @@
     <link href="http://stevendick.github.com/blog/2012/01/22/jacoco-and-gradle/"/>
     <updated>2012-01-22T18:01:00+01:00</updated>
     <id>http://stevendick.github.com/blog/2012/01/22/jacoco-and-gradle</id>
-    <content type="html"><![CDATA[<p>There&#8217;s a new kid on the block when it comes to code coverage in the Java world: <a href="http://http://www.eclemma.org/jacoco/">JaCoCo</a> (Java Code Coverage).</p>
+    <content type="html"><![CDATA[<p>There's a new kid on the block when it comes to code coverage in the Java world: <a href="http://http://www.eclemma.org/jacoco/">JaCoCo</a> (Java Code Coverage).</p>
 
-<p>It comes from the guys who did the EclEmma plug-in for Eclipse after they decided it wasn&#8217;t worthwhile to evolve the Emma code coverage tool (they are not the original developers). Instead they decided to start over and JaCoCo is the (ongoing) result.</p>
+<p>It comes from the guys who did the EclEmma plug-in for Eclipse after they decided it wasn't worthwhile to evolve the Emma code coverage tool (they are not the original developers). Instead they decided to start over and JaCoCo is the (ongoing) result.</p>
 
-<p>We originally used Emma for the code coverage, but this stopped working when we started using <a href="http://http://www.eclemma.org/jacoco/">Lombok</a> to generate all the boilerplate code that Java needs. The next step was Cobertura. I&#8217;ve worked with Cobertura in the past and found the build integration brittle; you end up with either 0% or 100% coverage and no obvious errors. Luckily one of the other guys set Cobertura up with our Ant build so I didn&#8217;t need to do it again.</p>
+<p>We originally used Emma for the code coverage, but this stopped working when we started using <a href="http://http://www.eclemma.org/jacoco/">Lombok</a> to generate all the boilerplate code that Java needs. The next step was Cobertura. I've worked with Cobertura in the past and found the build integration brittle; you end up with either 0% or 100% coverage and no obvious errors. Luckily one of the other guys set Cobertura up with our Ant build so I didn't need to do it again.</p>
 
-<p>Now I&#8217;m moving our build over to <a href="http://projectlombok.org/">Gradle</a> and wanted to look at how JaCoCo was progressing. I was pleasently surprised to find they&#8217;ve released, so I went looking for documentation on how to get this working with Gradle. No such luck and no-one to my knowledge has (yet) written a Gradle plug-in. After this, maybe I will.</p>
+<p>Now I'm moving our build over to <a href="http://projectlombok.org/">Gradle</a> and wanted to look at how JaCoCo was progressing. I was pleasently surprised to find they've released, so I went looking for documentation on how to get this working with Gradle. No such luck and no-one to my knowledge has (yet) written a Gradle plug-in. After this, maybe I will.</p>
 
 <p>JaCoCo does ship with Ant tasks and since Gradle includes Ant, it is very easy to use the tasks to get the work done.</p>
 
-<p>My first problem was working out where to get JaCoCo. Maven Central seemed the logical source, but that version appeared to be missing the Ant task and wouldn&#8217;t work with my Gradle script. I went for downloading JaCoCo and adding the Jar to my build project to solve the problem.</p>
+<p>My first problem was working out where to get JaCoCo. Maven Central seemed the logical source, but that version appeared to be missing the Ant task and wouldn't work with my Gradle script. I went for downloading JaCoCo and adding the Jar to my build project to solve the problem.</p>
 
 <p>One difference with JaCoCo from Cobertura is it uses a Java agent to instrument the classes on loading; no longer do we need to post-compile instrument the class files. This seems a much cleaner way of doing things.</p>
 
 <p>A quick bit of googling turned up the solution for specifying the agent argument when executing our tests in the Gradle build:</p>
 
-<div><script src='https://gist.github.com/1657770.js?file=junit.groovy'></script>
+<p><div><script src='https://gist.github.com/1657770.js?file=junit.groovy'></script>
 <noscript><pre><code>dependencies {
   codeCoverage files(&quot;${rootProject.projectDir.path}/lib/jacocoagent.jar&quot;)
 }
@@ -46,11 +46,11 @@ test {
     '-Xmx512m',
     '-XX:MaxPermSize=128m'
 }</code></pre></noscript></div>
-
+</p>
 
 <p>The first thing I do is add the JaCoCo jar to a new Gradle configuration, codeCoverage. This allows me to keep the JaCoCo Jar seperate from other compile and test dependencies.</p>
 
-<p>I&#8217;m passing a number of arguments to the agent to control JaCoCo&#8217;s behaviour:</p>
+<p>I'm passing a number of arguments to the agent to control JaCoCo's behaviour:</p>
 
 <ol>
 <li><code>${configurations.codeCoverage.singleFile}</code></li>
@@ -65,14 +65,14 @@ test {
 <ol>
 <li><p>Here I make use a new configuration, <code>codeCoverage</code>, to resolve the location of the JaCoCo Jar file.</p></li>
 <li><p>JaCoCo writes the code coverage metrics to a binary file we specify here.</p></li>
-<li><p>Identify the code coverage session. I haven&#8217;t had any success in seeing this in the results.</p></li>
+<li><p>Identify the code coverage session. I haven't had any success in seeing this in the results.</p></li>
 <li><p>Re-create the output file each time rather than appending to an existing file.</p></li>
 </ol>
 
 
-<p>This is enough to generate the statistics, but it doesn&#8217;t generate the report. For the report you need to do more work:</p>
+<p>This is enough to generate the statistics, but it doesn't generate the report. For the report you need to do more work:</p>
 
-<div><script src='https://gist.github.com/1657770.js?file=generate-coverage-report.groovy'></script>
+<p><div><script src='https://gist.github.com/1657770.js?file=generate-coverage-report.groovy'></script>
 <noscript><pre><code>task generateCoverageReport &lt;&lt; {
   ant {
     taskdef(name:'jacocoreport', classname: 'org.jacoco.ant.ReportTask') {
@@ -105,9 +105,9 @@ test {
     }
   }
 }</code></pre></noscript></div>
+</p>
 
-
-<p>Phew! There&#8217;s a lot going on here. This is where we make use of the Ant tasks that come with JaCoCo. Let&#8217;s break it down a bit:</p>
+<p>Phew! There's a lot going on here. This is where we make use of the Ant tasks that come with JaCoCo. Let's break it down a bit:</p>
 
 <h3>lines 3 - 5</h3>
 
@@ -127,24 +127,15 @@ test {
 
 <h3>line 28</h3>
 
-<p>Create an XML output file (this isn&#8217;t needed if you&#8217;re only interested in the HTML output).</p>
+<p>Create an XML output file (this isn't needed if you're only interested in the HTML output).</p>
 
 <h3>line 29</h3>
 
 <p>Create HTML report.</p>
 
-<p>I link the HTML output in our <a href="http://jenkins-ci.org">Jenkins</a> build (I&#8217;m not aware of a Jenkins plug-in for JaCoCo yet).</p>
+<p>I link the HTML output in our <a href="http://jenkins-ci.org">Jenkins</a> build (I'm not aware of a Jenkins plug-in for JaCoCo yet).</p>
 
-<p>The Gradle build where I use JaCoCo is a multi-project build which gives us the added challenge of combining the results from each project into a single report, but that&#8217;s for another blog entry&#8230;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test Post]]></title>
-    <link href="http://stevendick.github.com/blog/2011/12/31/test-post/"/>
-    <updated>2011-12-31T11:34:00+01:00</updated>
-    <id>http://stevendick.github.com/blog/2011/12/31/test-post</id>
-    <content type="html"><![CDATA[<p>This is a test post.</p>
+<p>The Gradle build where I use JaCoCo is a multi-project build which gives us the added challenge of combining the results from each project into a single report, but that's for another blog entry...</p>
 ]]></content>
   </entry>
   
