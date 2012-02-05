@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Groovy | <insert witty blog title>]]></title>
+  <link href="http://stevendick.github.com/blog/categories/groovy/atom.xml" rel="self"/>
+  <link href="http://stevendick.github.com/"/>
+  <updated>2012-02-05T16:17:58+01:00</updated>
+  <id>http://stevendick.github.com/</id>
+  <author>
+    <name><![CDATA[Steven Dick]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Gradle + Groovy + Spock + Windows == argh!]]></title>
+    <link href="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/"/>
+    <updated>2012-02-05T14:29:00+01:00</updated>
+    <id>http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash</id>
+    <content type="html"><![CDATA[<p>We've all experienced the 'pleasure' of <a href="http://en.wiktionary.org/wiki/yak_shaving">Yak shaving</a>. This is the tale of my most recent one.</p>
+
+<p>In porting our build to <a href="http://www.gradle.org">Gradle</a> we recently found we'd missed one project as part of the multi-project build. Easy, we just add the project to Gradles <code>settings.gradle</code> and all will be well.</p>
+
+<p>Nope.</p>
+
+<p>Another project in the build fails and it has no obvious relation to the newly re-added project. WTF? Some error about <code>groovyc</code> (the Ant task for building Groovy code) has failed.</p>
+
+<p>A bit of googling shows we've run up against the command line limitation on Windows (8K for XP onwards, only 2K for older versions). Bummer, but we can change the default Gradle behaviour to run the Groovy compilation in-process rather than spawning the compiler from the command line and encountering the problem.</p>
+
+<p>That should work. Nope.</p>
+
+<p>Now <a href="https://github.com/spockframework/spock">Spock</a> is complaining that we've failed to process the annotations on all tests using Spock. This must be because we're running in-process and Spock's annotation processor isn't on the classpath.</p>
+
+<p>Maybe adding Spock to Gradle's classpath fixes this new problem? Nope.</p>
+
+<p>OK, back to googling around. <a href="http://stackoverflow.com/questions/5434482/how-can-i-create-a-pathing-jar-in-gradle">Stack Overflow</a> shows a workaround for problems of classpaths that are too long. Basically, replace the long classpath with an empty JAR containing a MANIFEST.MF that defines the real classpath. Sounds easy enough.</p>
+
+<p>Does the pathing JAR solve the problem? Nope. The first problem with this solution is the lack of a clear description with examples of how this works. The classpath. The paths should be relative URLs (absolute paths appear to work on Mac OS X, but not Windows) from the point-of-view of the pathing JAR. I did this, but none of my classpath dependencies were found and no obvious reason why.</p>
+
+<p>Argh! Back to Google. I eventually found a recent <a href="http://jira.codehaus.org/browse/GROOVY-5024">bug</a> about the command line length problem with Groovy and a proposed patch (not yet accepted). I also raised a problem with the Gradle guys to see if anyone else could point out a workaround.</p>
+
+<p>After giving it a day and no simple workaround appearing, I decided to try and apply the patch myself and build my own local Groovy. I used the 1.8.5 version of Groovy and manually applied the patch in Eclipse as the patch line numbers didn't match up to the source. Groovy recently moved to building with Gradle, so after cleaning up the <code>docs.gradle</code> file (it had diff markings in it, meaning it didn't work), I was able to build with Gradle. The build did report an error right at the end, but this was after the<code>groovy</code> and <code>groovy-all</code> JARs were produced, so that wasn't a problem.</p>
+
+<p>Using the locally built Groovy did have one downside: I needed to provide the needed dependencies explicitly rather than relying on the transitive dependencies automatically being resolved, but that's a small price to pay.</p>
+
+<p>So at last, the build works and I can leave that particular Yak alone.</p>
+]]></content>
+  </entry>
+  
+</feed>
