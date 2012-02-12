@@ -4,7 +4,7 @@
   <title><![CDATA[<insert witty blog title>]]></title>
   <link href="http://stevendick.github.com/atom.xml" rel="self"/>
   <link href="http://stevendick.github.com/"/>
-  <updated>2012-02-05T16:17:58+01:00</updated>
+  <updated>2012-02-12T18:30:05+01:00</updated>
   <id>http://stevendick.github.com/</id>
   <author>
     <name><![CDATA[Steven Dick]]></name>
@@ -12,6 +12,110 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JaCoCo &amp; Gradle - Part 2]]></title>
+    <link href="http://stevendick.github.com/blog/2012/02/12/jacoco-and-gradle-part-2/"/>
+    <updated>2012-02-12T18:13:00+01:00</updated>
+    <id>http://stevendick.github.com/blog/2012/02/12/jacoco-and-gradle-part-2</id>
+    <content type="html"><![CDATA[<p>This is a small follow-up on my <a href="http://stevendick.github.com/blog/2012/01/22/jacoco-and-gradle/">first post</a> on<a href="http://www.eclemma.org/jacoco/">JaCoCo</a> &amp; <a href="http://www.gradle.org">Gradle</a> that shows how to collate and report the code coverage for a multi-project build.</p>
+
+<p>We&#8217;ve already seen the basics in part one. We still run JaCoCo during the unit testing, but now the unit testing happens once per Java project.</p>
+
+<p>I decided to collect together the generated JaCoCo coverage files for generating the report, but I think this step could be cut out, but I haven&#8217;t tried this simplification yet. Here&#8217;s the code coverage run per project and the results copied to the root project&#8217;s output directory using the projects&#8217; names as part of the new coverage file names:</p>
+
+<div><script src='https://gist.github.com/1809759.js?file=copy-jacoco-data.groovy'></script>
+<noscript><pre><code>subprojects {
+    apply plugin: 'groovy'
+    
+    sourceCompatibility = 1.6
+    
+    configurations {
+        codeCoverage
+    }
+    
+    dependencies {
+        codeCoverage files(&quot;${rootProject.projectDir.path}/lib/jacocoagent.jar&quot;)
+    }
+    
+    test {
+        // only include tests from the default package (which are expected to be test suites)
+        include 'Test*'
+        
+        // JaCoCo uses an agent to do code coverage instrumentation on loading rather than instrumenting class files on disk
+        // we set the jacoco property in case code needs to know that jacoco is active (otherwise some reflection tests fail)
+        jvmArgs &quot;-javaagent:${configurations.codeCoverage.singleFile}=destfile=${buildDirName}/coverage-results/jacoco.exec,sessionid=HSServ,append=false&quot;, 
+                '-Djacoco=true',
+                '-Xms128m',
+                '-Xmx512m',
+                '-XX:MaxPermSize=128m'
+                
+        
+     }
+    
+    task copyCoverageData(dependsOn: test, type: Copy) {
+        from &quot;${buildDirName}/coverage-results&quot;
+        into &quot;${rootProject.buildDir.path}/coverage-results&quot;
+        include 'jacoco.exec'
+        rename 'jacoco.exec', &quot;${project.name}.jacoco.exec&quot;   
+    }
+}</code></pre></noscript></div>
+
+
+<p>Now we can generate the report from the individual JaCoCo data files and include the source code for each project:</p>
+
+<div><script src='https://gist.github.com/1809759.js?file=generate-report.groovy'></script>
+<noscript><pre><code>task generateCoverageReport &lt;&lt; {
+    ant {
+        taskdef(name:'jacocoreport', classname: 'org.jacoco.ant.ReportTask') {
+            classpath path: &quot;${rootProject.projectDir.path}/lib/jacocoant.jar&quot;
+        }
+        
+        mkdir dir: &quot;${buildDirName}/reports/coverage&quot;
+        
+        jacocoreport {
+            executiondata {
+                fileset(dir: &quot;${buildDirName}/coverage-results&quot;) {
+                    include name: '*.jacoco.exec'
+                }
+            }
+            
+            structure(name: project.name) {
+                
+                classfiles {
+                    dependsOnProjects.each { project -&gt;
+                        fileset dir: &quot;${project.buildDir.path}/classes/main&quot;
+                    }
+                }
+                sourcefiles(encoding: 'CP1252') {
+                    dependsOnProjects.each { project -&gt;
+                        fileset dir: &quot;${project.projectDir.path}/src/main/java&quot;
+                    }
+                }
+            }
+            
+            xml  destfile: &quot;${buildDirName}/reports/coverage/jacoco.xml&quot;
+            html destdir: &quot;${buildDirName}/reports/coverage&quot;
+        }
+    }
+}
+
+</code></pre></noscript></div>
+
+
+<p>The final part is to wire up the dependencies. We can&#8217;t generate the report unless all the sub-projects have finished copying the JaCoCo data files:</p>
+
+<div><script src='https://gist.github.com/1809759.js?file=coverage-report-dependencies.groovy'></script>
+<noscript><pre><code>generateCoverageReport.dependsOn {
+    subprojects.collect { project -&gt;
+        project.copyCoverageData.path
+    }
+}</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gradle + Groovy + Spock + Windows == argh!]]></title>
