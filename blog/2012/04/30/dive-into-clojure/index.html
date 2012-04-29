@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Gradle + Groovy + Spock + Windows == argh! - <insert witty blog title></title>
+  <title>Dive into Clojure - <insert witty blog title></title>
   <meta name="author" content="Steven Dick">
 
   
-  <meta name="description" content="We&#8217;ve all experienced the &#8216;pleasure&#8217; of Yak shaving. This is the tale of my most recent one. In porting our build to Gradle we &hellip;">
+  <meta name="description" content="No, not a review of a Clojure book you&#8217;ve never heard of: Dive into Clojure, but more a play on words as I spent quite a bit of time reading &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash">
+  <link rel="canonical" href="http://stevendick.github.com/blog/2012/04/30/dive-into-clojure">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">Gradle + Groovy + Spock + Windows == Argh!</h1>
+      <h1 class="entry-title">Dive Into Clojure</h1>
     
     
       <p class="meta">
@@ -83,40 +83,40 @@
   
 
 
-<time datetime="2012-02-05T14:29:00+01:00" pubdate data-updated="true">2012-02-05</time>
+<time datetime="2012-04-30T18:01:00+02:00" pubdate data-updated="true">2012-04-30</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>We&#8217;ve all experienced the &#8216;pleasure&#8217; of <a href="http://en.wiktionary.org/wiki/yak_shaving">Yak shaving</a>. This is the tale of my most recent one.</p>
+<div class="entry-content"><p>No, not a review of a Clojure book you&#8217;ve never heard of: Dive into Clojure, but more a play on words as I spent quite a bit of time reading <a href="http://clojurebook.com">Clojure Programming</a> (not to be confused with <a href="http://pragprog.com/book/shcloj/programming-clojure">Programming Clojure</a>) while on a diving holiday in Egypt&#8217;s Red Sea.</p>
 
-<p>In porting our build to <a href="http://www.gradle.org">Gradle</a> we recently found we&#8217;d missed one project as part of the multi-project build. Easy, we just add the project to Gradles <code>settings.gradle</code> and all will be well.</p>
+<p>Before getting to the book I want to say I think O&#8217;Reilly&#8217;s Safari Online is pretty terrible. Difficult to navigate and always pushing for you to take a paid subscription. It compares badly to The <a href="http://pragprog.com">Pragmatic Programmer</a> guys in managing your books online. I was annoyed that the epud version wasn&#8217;t available until the book was finished (I regularly use the early access feature to technical books).</p>
 
-<p>Nope.</p>
+<p>I did very little functional programming at University and what I did (ML), I didn&#8217;t like and/or appreciate. Since then I&#8217;ve been programming in a variety of languages including C/C++, Visual Basic and, for the last 10 years, Java. All firmly in the imperative style.</p>
 
-<p>Another project in the build fails and it has no obvious relation to the newly re-added project. WTF? Some error about <code>groovyc</code> (the Ant task for building Groovy code) has failed.</p>
+<p>I am always looking for tools to make my programming life easier and I&#8217;ve become increasingly frustrated with Java&#8217;s verbosity and clumsy support for meta-programming.</p>
 
-<p>A bit of googling shows we&#8217;ve run up against the command line limitation on Windows (8K for XP onwards, only 2K for older versions). Bummer, but we can change the default Gradle behaviour to run the Groovy compilation in-process rather than spawning the compiler from the command line and encountering the problem.</p>
+<p>Of the newer languages on the block, I&#8217;ve dabbled with Python, Ruby, Groovy, Scala and now Clojure. So far, Groovy had been the the alternative language that was usable in my day job as it can work as a companion to your Java code whereas I see the other languages as a complete replacement (though they can all run on the JVM).</p>
 
-<p>That should work. Nope.</p>
+<p>Why Clojure? Why not? Clojure had 2 points that drew me to it: it&#8217;s a Lisp and that has an air of mysticism attached to it since it comes from the dawn of the computer age and it&#8217;s a functional language. Scala pitches itself as a functional/OOP hybrid; you&#8217;re not forced to go functional and I felt I would benefit from using a functional-only style language.</p>
 
-<p>Now <a href="https://github.com/spockframework/spock">Spock</a> is complaining that we&#8217;ve failed to process the annotations on all tests using Spock. This must be because we&#8217;re running in-process and Spock&#8217;s annotation processor isn&#8217;t on the classpath.</p>
+<p>Of the three authors (Chas Emerick, Brian Carper and Christophe Grand), I had come across Chas and Christophe in my web reading around Clojure.</p>
 
-<p>Maybe adding Spock to Gradle&#8217;s classpath fixes this new problem? Nope.</p>
+<p>The first part of the book goes into detail on the nuts and bolts of Clojure before getting to the functional and concurrency parts of the language.</p>
 
-<p>OK, back to googling around. <a href="http://stackoverflow.com/questions/5434482/how-can-i-create-a-pathing-jar-in-gradle">Stack Overflow</a> shows a workaround for problems of classpaths that are too long. Basically, replace the long classpath with an empty JAR containing a MANIFEST.MF that defines the real classpath. Sounds easy enough.</p>
+<p>The one thing that sold me on the book and spending more time with Clojure is the example of a functional approach to implementing <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway&#8217;s Game of Life</a>.</p>
 
-<p>Does the pathing JAR solve the problem? Nope. The first problem with this solution is the lack of a clear description with examples of how this works. The classpath. The paths should be relative URLs (absolute paths appear to work on Mac OS X, but not Windows) from the point-of-view of the pathing JAR. I did this, but none of my classpath dependencies were found and no obvious reason why.</p>
+<p>Wow.</p>
 
-<p>Argh! Back to Google. I eventually found a recent <a href="http://jira.codehaus.org/browse/GROOVY-5024">bug</a> about the command line length problem with Groovy and a proposed patch (not yet accepted). I also raised a problem with the Gradle guys to see if anyone else could point out a workaround.</p>
+<p>This was a real eye opener for me on the power of a functional style. The elegance of the solution is something for me to aspire to as I learn more of Clojure.</p>
 
-<p>After giving it a day and no simple workaround appearing, I decided to try and apply the patch myself and build my own local Groovy. I used the 1.8.5 version of Groovy and manually applied the patch in Eclipse as the patch line numbers didn&#8217;t match up to the source. Groovy recently moved to building with Gradle, so after cleaning up the <code>docs.gradle</code> file (it had diff markings in it, meaning it didn&#8217;t work), I was able to build with Gradle. The build did report an error right at the end, but this was after the<code>groovy</code> and <code>groovy-all</code> JARs were produced, so that wasn&#8217;t a problem.</p>
+<p>This is the first time I&#8217;ve explored macros in Clojure. Previously I suffered the double trouble of hearing that macros are complicated and a mind poisoned by the C/C++ usage of the word &#8216;macro&#8217;. While I&#8217;m sure there&#8217;s plenty still to learn about them, I&#8217;m starting to see the power and their usage.</p>
 
-<p>Using the locally built Groovy did have one downside: I needed to provide the needed dependencies explicitly rather than relying on the transitive dependencies automatically being resolved, but that&#8217;s a small price to pay.</p>
+<p>I enjoyed the fact that the book goes into detail on practical things, such as database access, web programming and how to deploy things. All essential features of getting stuff working in the real world.</p>
 
-<p>So at last, the build works and I can leave that particular Yak alone.</p>
+<p>I heartily recommend the book.</p>
 </div>
 
 
@@ -139,12 +139,12 @@
   
 
 
-<time datetime="2012-02-05T14:29:00+01:00" pubdate data-updated="true">2012-02-05</time>
+<time datetime="2012-04-30T18:01:00+02:00" pubdate data-updated="true">2012-04-30</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gradle/'>Gradle</a>, <a class='category' href='/blog/categories/groovy/'>Groovy</a>, <a class='category' href='/blog/categories/spock/'>Spock</a>, <a class='category' href='/blog/categories/windows/'>Windows</a>
+    <a class='category' href='/blog/categories/clojure/'>Clojure</a>, <a class='category' href='/blog/categories/jvm/'>JVM</a>
   
 </span>
 
@@ -153,7 +153,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/" data-via="stevendick" data-counturl="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/" data-via="stevendick" data-counturl="http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/" >Tweet</a>
   
   
   
@@ -162,10 +162,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/01/22/jacoco-and-gradle/" title="Previous Post: JaCoCo &amp; Gradle">&laquo; JaCoCo &amp; Gradle</a>
+        <a class="basic-alignment left" href="/blog/2012/02/12/jacoco-and-gradle-part-2/" title="Previous Post: JaCoCo &amp; Gradle - Part 2">&laquo; JaCoCo &amp; Gradle - Part 2</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/02/12/jacoco-and-gradle-part-2/" title="next Post: JaCoCo &amp; Gradle - Part 2">JaCoCo &amp; Gradle - Part 2 &raquo;</a>
       
     </p>
   </footer>
@@ -273,8 +271,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/';
-        var disqus_url = 'http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/';
+        var disqus_identifier = 'http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/';
+        var disqus_url = 'http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/';
         var disqus_script = 'embed.js';
       
     (function () {

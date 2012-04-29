@@ -4,7 +4,7 @@
   <title><![CDATA[<insert witty blog title>]]></title>
   <link href="http://stevendick.github.com/atom.xml" rel="self"/>
   <link href="http://stevendick.github.com/"/>
-  <updated>2012-02-12T18:30:05+01:00</updated>
+  <updated>2012-04-29T17:56:44+02:00</updated>
   <id>http://stevendick.github.com/</id>
   <author>
     <name><![CDATA[Steven Dick]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dive into Clojure]]></title>
+    <link href="http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/"/>
+    <updated>2012-04-30T18:01:00+02:00</updated>
+    <id>http://stevendick.github.com/blog/2012/04/30/dive-into-clojure</id>
+    <content type="html"><![CDATA[<p>No, not a review of a Clojure book you&#8217;ve never heard of: Dive into Clojure, but more a play on words as I spent quite a bit of time reading <a href="http://clojurebook.com">Clojure Programming</a> (not to be confused with <a href="http://pragprog.com/book/shcloj/programming-clojure">Programming Clojure</a>) while on a diving holiday in Egypt&#8217;s Red Sea.</p>
+
+<p>Before getting to the book I want to say I think O&#8217;Reilly&#8217;s Safari Online is pretty terrible. Difficult to navigate and always pushing for you to take a paid subscription. It compares badly to The <a href="http://pragprog.com">Pragmatic Programmer</a> guys in managing your books online. I was annoyed that the epud version wasn&#8217;t available until the book was finished (I regularly use the early access feature to technical books).</p>
+
+<p>I did very little functional programming at University and what I did (ML), I didn&#8217;t like and/or appreciate. Since then I&#8217;ve been programming in a variety of languages including C/C++, Visual Basic and, for the last 10 years, Java. All firmly in the imperative style.</p>
+
+<p>I am always looking for tools to make my programming life easier and I&#8217;ve become increasingly frustrated with Java&#8217;s verbosity and clumsy support for meta-programming.</p>
+
+<p>Of the newer languages on the block, I&#8217;ve dabbled with Python, Ruby, Groovy, Scala and now Clojure. So far, Groovy had been the the alternative language that was usable in my day job as it can work as a companion to your Java code whereas I see the other languages as a complete replacement (though they can all run on the JVM).</p>
+
+<p>Why Clojure? Why not? Clojure had 2 points that drew me to it: it&#8217;s a Lisp and that has an air of mysticism attached to it since it comes from the dawn of the computer age and it&#8217;s a functional language. Scala pitches itself as a functional/OOP hybrid; you&#8217;re not forced to go functional and I felt I would benefit from using a functional-only style language.</p>
+
+<p>Of the three authors (Chas Emerick, Brian Carper and Christophe Grand), I had come across Chas and Christophe in my web reading around Clojure.</p>
+
+<p>The first part of the book goes into detail on the nuts and bolts of Clojure before getting to the functional and concurrency parts of the language.</p>
+
+<p>The one thing that sold me on the book and spending more time with Clojure is the example of a functional approach to implementing <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway&#8217;s Game of Life</a>.</p>
+
+<p>Wow.</p>
+
+<p>This was a real eye opener for me on the power of a functional style. The elegance of the solution is something for me to aspire to as I learn more of Clojure.</p>
+
+<p>This is the first time I&#8217;ve explored macros in Clojure. Previously I suffered the double trouble of hearing that macros are complicated and a mind poisoned by the C/C++ usage of the word &#8216;macro&#8217;. While I&#8217;m sure there&#8217;s plenty still to learn about them, I&#8217;m starting to see the power and their usage.</p>
+
+<p>I enjoyed the fact that the book goes into detail on practical things, such as database access, web programming and how to deploy things. All essential features of getting stuff working in the real world.</p>
+
+<p>I heartily recommend the book.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JaCoCo &amp; Gradle - Part 2]]></title>
