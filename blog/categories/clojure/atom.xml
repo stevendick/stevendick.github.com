@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Clojure | <insert witty blog title>]]></title>
   <link href="http://stevendick.github.com/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://stevendick.github.com/"/>
-  <updated>2012-04-29T17:56:44+02:00</updated>
+  <updated>2012-06-03T22:45:04+02:00</updated>
   <id>http://stevendick.github.com/</id>
   <author>
     <name><![CDATA[Steven Dick]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Clojure Training]]></title>
+    <link href="http://stevendick.github.com/blog/2012/06/02/clojure-training/"/>
+    <updated>2012-06-02T11:24:00+02:00</updated>
+    <id>http://stevendick.github.com/blog/2012/06/02/clojure-training</id>
+    <content type="html"><![CDATA[<p>Further to my earlier blog post on the <a href="http://stevendick.github.com/blog/2012/04/30/dive-into-clojure/">Clojure Programming</a> book, I decided to give myself a good kickstart by attending the Euroclojure training and conference in London at the end of May 2012.</p>
+
+<p>I was disappointed to learn that only seven people were taking the opportunity for the training, especially since <a href="http://thinkrelevance.com/">Relevance</a> were they guys giving the course. On the other hand, it did mean everyone could engage with the two instructors, Stuart Sierra and Luke VanderHart (and yes, that is a capital H in the middle of his surname) at leisure.</p>
+
+<p>At this stage of Clojure's growth, who invests in a training course? We had a couple of trainers from Ireland, a startup founder from Denmark and two guys from the CNRS, the French National Center for Scientific Research. All keen technologists, as you'd expect. Investing in Clojure from a career point-of-view is not a sure-fire winner at this point-in-time.</p>
+
+<p>The course was over three days and alternated between theory and some of the most challanging labs I've had in language training. It wasn't always possible to complete the labs in the time allowed (which was at least an hour), but one could always come back to them in quiet moments or at the end-of-the-day. Luke and Stuart alternated between the topics and the class had a good back-and-forth discussion with both the trainers.</p>
+
+<p>Of the lab sessions, I most enjoyed solving the how-to-score-a-hand-of-poker problems. This involved lots of higher-order function use and I needed an additional hour in the evening to finish it, but it did give a sense of accomplishment when I got the final code to run.</p>
+
+<p>For the afternoon of the last day we had an introduction to <a href="https://github.com/clojure/clojurescript">ClojureScript</a>. This was the one part of the training that didn't work for me. To give some context, I mostly do server side development and last did web development back in 1999 with a mixture of ASP, VBScript and Javascript. We used the <a href="http://clojurescriptone.com/">ClojureScriptOne</a> application as the starting point of wiring up a web application to rock-paper-scissors game we implemented in an earlier lab.</p>
+
+<p>This involved too much magic for me and I couldn't work out what needed to be done for most of the lab exercises and needed to look at the answers. So while I'm interested in ClojureScript, this lab didn't improve my understanding.</p>
+
+<p>For the final hour of the training Stuart suggested we work through some code examples as a group to give a more interactive approach. This worked well and helped me get on track as my solo efforts to solve the last problem were going in the wrong direction.</p>
+
+<p>All-in-all I thoroughly enjoyed the training and would recommend it to anyone interested in getting their feet wet with Clojure. Thanks go to Stuart and Luke for an entertaining three days.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dive into Clojure]]></title>
