@@ -1,0 +1,118 @@
+package configuration for libffi is not found
+find_header: checking for ffi.h in /usr/local/include... -------------------- no
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main() {return 0;}
+/* end */
+
+"gcc -E -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC  conftest.c -o conftest.i"
+conftest.c:3:17: fatal error: ffi.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <ffi.h>
+/* end */
+
+"gcc -E -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC -I/usr/local/include conftest.c -o conftest.i"
+conftest.c:3:17: fatal error: ffi.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <ffi.h>
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_blocking_region()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_blocking_region; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for ruby_thread_has_gvl_p()... -------------------- no
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:5:53: error: ‘ruby_thread_has_gvl_p’ undeclared (first use in this function)
+conftest.c:5:53: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { void ((*volatile p)()); p = (void ((*)()))ruby_thread_has_gvl_p; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+/tmp/ccReDmlp.o: In function `t':
+/home/main/blog/octopress/bundler/ruby/1.9.1/gems/ffi-1.0.9/ext/ffi_c/conftest.c:5: undefined reference to `ruby_thread_has_gvl_p'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { ruby_thread_has_gvl_p(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for ruby_native_thread_p()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { void ((*volatile p)()); p = (void ((*)()))ruby_native_thread_p; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_call_with_gvl()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:5:53: error: ‘rb_thread_call_with_gvl’ undeclared (first use in this function)
+conftest.c:5:53: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_call_with_gvl; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/include/ruby-1.9.1/x86_64-linux -I/usr/include/ruby-1.9.1/ruby/backward -I/usr/include/ruby-1.9.1 -I.    -fno-strict-aliasing -g -g -O2 -fPIC conftest.c  -L. -L/usr/lib -L.  -rdynamic -Wl,-export-dynamic     -lruby-1.9.1  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main() {return 0;}
+5: int t() { rb_thread_call_with_gvl(); return 0; }
+/* end */
+
+--------------------
+
