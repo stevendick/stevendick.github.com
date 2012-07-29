@@ -9,7 +9,7 @@
   <meta name="author" content="Steven Dick">
 
   
-  <meta name="description" content="Further to my earlier blog post on the Clojure Programming book, I decided to give myself a good kickstart by attending the Euroclojure training and &hellip;">
+  <meta name="description" content="Ever since I did front-end development with C &amp; X Windows in the mid 90&#8217;s I&#8217;ve stuck to server-side development as a preference. Some &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/29/re-discovering-frontend-web-development/">(Re-)Discovering Frontend Web Development</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-29T18:42:00+02:00" pubdate data-updated="true">2012-07-29</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ever since I did front-end development with C &amp; X Windows in the mid 90&#8217;s I&#8217;ve stuck to server-side development as a preference. Some ASP (no, not the nicer ASP.NET, but the original - &#42;shudder&#42;) in the late 90&#8217;s was a brief detour, but it&#8217;s been solidly server-side since.</p>
+
+<p>We&#8217;ve all seen the trend towards applications migrating to the browser and the related resurgence of Javascript as a language.</p>
+
+<p>Related to this, I&#8217;ve been working on a large application with a legacy Java Swing client for the last number of years and our attempts to modernise this with a service layer and a more ambitious change of client technology.</p>
+
+<p>For various reasons we started with Flex at the tail-end of 2010, and for non-technical reasons, this approach was killed in late 2011 (no, not related to Adobe&#8217;s foot-in-mouth moment of appearing to <a href="http://blogs.adobe.com/flex/2011/11/your-questions-about-flex.html">shoot Flex in the head</a>).</p>
+
+<p>If I was to make the decision today, I&#8217;d go with a pure web approach. While we don&#8217;t have the luxury of doing the re-write at the moment, I do want to be ready with a recommendation on what we could use.</p>
+
+<p>This leads to the TL;DR bit - holy shit! There&#8217;s a lot of frameworks and libraries for doing modern web stuff. It&#8217;s damn confusing and I&#8217;m sure there&#8217;s plenty of right answers.</p>
+
+<p>We want to build a web application, not a web site, so I was leaning towards the <a href="http://en.wikipedia.org/wiki/Single-page_application">single-page application</a> style. Gmail is a classic example of this style. I&#8217;ve also never been a fan of server-side templating - this maybe a side-effect of doing ASP all those years ago. I&#8217;d prefer to keep the services as a pure API unencumbered with presentation stuff.</p>
+
+<p>I&#8217;ll end this piece with a list of interesting libraries and frameworks I came across in my research and follow-up on what came next:</p>
+
+<ul>
+<li><a href="http://www.sencha.com/products/extjs/">Extjs</a></li>
+<li><a href="http://smartclient.com/">Smartclient</a></li>
+<li><a href="http://emberjs.com/">Ember.js</a></li>
+<li><a href="http://backbonejs.org/">Backbone.js</a></li>
+<li><a href="http://knockoutjs.com/">Knockoutjs</a></li>
+<li><a href="http://angularjs.org/">AngularJS</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -538,6 +598,10 @@ test {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/29/re-discovering-frontend-web-development/">(Re-)Discovering Frontend Web Development</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/06/02/clojure-training/">Clojure Training</a>
       </li>
     
@@ -551,10 +615,6 @@ test {
     
       <li class="post">
         <a href="/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/">Gradle + Groovy + Spock + Windows == argh!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/22/jacoco-and-gradle/">JaCoCo &amp; Gradle</a>
       </li>
     
   </ul>
