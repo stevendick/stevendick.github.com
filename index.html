@@ -9,7 +9,7 @@
   <meta name="author" content="Steven Dick">
 
   
-  <meta name="description" content="Ever since I did front-end development with C &amp; X Windows in the mid 90&#8217;s I&#8217;ve stuck to server-side development as a preference. Some &hellip;">
+  <meta name="description" content="Getting back into web development is an overwhelming experience as I recounted in my last entry. After perusing this interesting comparison of the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,116 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/10/01/angularjs/">AngularJS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-01T20:14:00+02:00" pubdate data-updated="true">2012-10-01</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Getting back into web development is an overwhelming experience as I recounted in my last entry. After perusing <a href="http://codebrief.com/2012/01/the-top-10-javascript-mvc-frameworks-reviewed/">this</a> interesting comparison of the various MVC Javascript frameworks, I decided to look further at <a href="http://angularjs.org/">AngularJS</a> (I&#8217;ll just call it Angular from here on out).</p>
+
+<p>Why Angular? I liked Angular&#8217;s approach to HTML templating and the emphasis on testing. Only after someone else mentioned it, did I realise that Angular imposes no particular implementation on the model; many of the other frameworks impose an inheritence model.</p>
+
+<p>Based on the quantity of links and Github watchers, <a href="http://backbonejs.org/">Backbone.js</a> appears to be the leader in this space, though I think the comparison might be rather superficial as Backbone is more limited in scope (by design) than Angular. Backbone is more at the library end of the scale and Angular is towards the framework end.</p>
+
+<p>As part of my evaluation of Angular, I wanted to build some very minimal working code. I have a lot of experience with Java, but find Java (the language) frustrating for modern development. To increase the fun, I built the backend with Grails; the Java world&#8217;s answer to Ruby on Rails. Grails will be a topic of another blog entry.</p>
+
+<h2>The Domain</h2>
+
+<p>I work in finance, so the demo was around CRUD (I only did the RU bit for Angular) for managing trades, essentially the buying and selling of funds. It could be about CRUD for any thing as finance only impacted the name of the fields I was capturing, not the functionality of the demo.</p>
+
+<h2>Learning</h2>
+
+<p>I find Angular&#8217;s documentation adequate - nothing more. The API guide is complete, but often missing the &#8216;why&#8217; and the &#8216;how&#8217; of a feature. Experimentation is the name of the game -  something I assume anyone looking at an early-stage technology (in any area of IT) would be comfortable with.</p>
+
+<p>I think the tutorial is the weakest part. I can&#8217;t quite put my finger on why the tutorial doesn&#8217;t work for me, but I didn&#8217;t like it and skipped it.</p>
+
+<p>Much more useful was the basic <a href="https://github.com/angular/angular-seed">Angular template project</a>. Clone it from Github and you&#8217;re good to go with a minimal, working Angular app. Now you can experiment and see the results.</p>
+
+<p>There&#8217;s a Google group and IRC chat channel as well. I had the occasional hit on the Google group when searching for answers, but I never tried the IRC channel for help.</p>
+
+<p>There&#8217;s a good number of videos on Youtube from the Angular team from various presentations they&#8217;ve given. I&#8217;d also recommend looking at some of the shorter and more focused videos on implementing Angular, especially from <a href="http://www.youtube.com/user/johnlindquist">John Lindquist</a> - as a bonus you&#8217;ll see John using <a href="http://www.jetbrains.com/webstorm/">Webstorm</a>, a pretty nice IDE for web development that I switched to half way through my two week investigation.</p>
+
+<h2>What I Implemented</h2>
+
+<p>Because I don&#8217;t have enough new moving parts in my exploration, I deployed the end result to <a href="https://www.fohf.com/app/index.html">AWS (Amazon Web Services)</a> using a custom domain and added HTTPS support.</p>
+
+<p>I&#8217;d already used Grails to generate scaffolding for a simple CRUD app for trade entry using server-side rendering, so I decided to replace the RU bit with an Angular implementation.</p>
+
+<p>I&#8217;m assuming readers are at least vaguely familiar with the MVC pattern (and its many variants). At the end of the day I didn&#8217;t have much code to get Angular using the JSON-based Grails server. A big part of this is Angular&#8217;s <a href="http://docs.angularjs.org/api/ngResource.$resource">resource</a> abstraction that makes it simple to bind CRUD functionality to a REST-flavoured server.</p>
+
+<p>One area Angular is not opinionated is the file structure of your project. Being recently returned to JavaScript, I don&#8217;t currently have a good feel for what makes a logical and maintainable file layout for Angular&#8217;s routes, controller, services and models. Looking at how others organise their projects will be an interesting learning experience.</p>
+
+<h2>Security</h2>
+
+<p>This more a general topic for the SPA (Single Page Application) style of application. With server-side rendering of web pages, it&#8217;s easy secure the HTTP end-points, but how to secure the XHR calls? Ultimately, this appears to be going the way of something like <a href="http://oauth.net/2/">OAuth2</a> with tokens added to every call, but I didn&#8217;t want to add yet another new topic to my investigation. Maybe I could continue to use session-based security I get for free with Grails?</p>
+
+<p>The problem: requesting a secured URL triggers an HTTP 302 Found response that is automatically handled by the browser and does the redirection behind-the-scenes. You asked for a list of trades in JSON? Have an HTML page for the login form instead!</p>
+
+<p>The redirect-to-login-page-on-insecure-access pattern doesn&#8217;t seem like a good fit for SPA apps. Looking at the HTTP responses, 401 Unauthorized seems a more fitting response. But how to handle this in Angular?</p>
+
+<p>The Interwebs to the rescue! You can find a discussion and code for a solution <a href="http://www.espeo.pl/2012/02/26/authentication-in-angularjs-application">here</a> and <a href="https://github.com/witoldsz/angular-http-auth">here</a>. Thanks to Witold Szczerba for sharing his solution. The solution uses Angular&#8217;s interception feature to:</p>
+
+<ol>
+<li>fire an event when we receive a HTTP 401 response and remember what we were trying to request</li>
+<li>Other code listening for the event will dynamically show a login form</li>
+<li>authenticate and fire a success event</li>
+<li>request the original URL</li>
+</ol>
+
+
+<p>It took me a few hours to get this working in my app, but it&#8217;s always a nice feeling when you get the code to do what you want it to.</p>
+
+<h2>Summary</h2>
+
+<p>All-in-all, I enjoyed my experiment with Angular.</p>
+
+<p>What I liked:</p>
+
+<ul>
+<li>Declarative nature with the HTML fragments</li>
+<li>Lack of code to write</li>
+<li>REST/resource abstraction</li>
+</ul>
+
+
+<p>What needs some work:</p>
+
+<ul>
+<li>Documentation</li>
+<li>Examples</li>
+<li>Composable views</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -598,6 +708,10 @@ test {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/10/01/angularjs/">AngularJS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/29/re-discovering-frontend-web-development/">(Re-)Discovering Frontend Web Development</a>
       </li>
     
@@ -611,10 +725,6 @@ test {
     
       <li class="post">
         <a href="/blog/2012/02/12/jacoco-and-gradle-part-2/">JaCoCo &amp; Gradle - Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/">Gradle + Groovy + Spock + Windows == argh!</a>
       </li>
     
   </ul>
