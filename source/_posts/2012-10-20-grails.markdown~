@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Grails"
+date: 2012-10-20 20:12
+comments: true
+categories: 
+---
+
+My last post talked about my experiment with AngularJS, one of the new breed of Javascript MVC frameworks. AngularJS is one of the possible choices on the client side, but you still need something on the server side.
+
+My choice for this exploration was [Grails][1]. I've been using Java for almost ten years and it's simply not the best choice if you want to quickly knock-up something to serve JSON. I've been using Groovy to suplement Java with some dynamic scripting, so Grails was an obvious choice.
+
+I'm an Eclipse user, but for most of my Groovy work I've just used the plain text editing features of Eclipse. For my experiment I decided to use the Groovy and Grails features of [STS (Spring Tool Suite)][2] for Eclipse. This gives Groovy syntax highlighting, code auto-completion and understands Grails projects.
+
+** Installing the Tools **
+
+STS for Grails is available from Eclipse's Marketplace, so installation is simple. STS doesn't include Grails, so you need to download it seperately and point the STS configuration to it.
+
+** Our Implementation **
+
+The test application will capture trade information for funds. The heart of this is modelling the trade. The actual fields aren't terribly important at this stage.
+
+I created a Grails project with STS that generates the...
+
+Generate scaffolding
+
+** Security **
+
+Previously I compared [Spring Security][3] and [Apache Shiro][4] for integration with Windows Active Directory. In that case I chose Shiro and decided to go with that again. Adding Shiro to Grails is as simple as installing the Grails plug-in and generating the default scaffolding. All that I did was hardcode an initial user name and password so we could still get the system.
+
+** Multi-Tenancy **
+
+I'm interested in doing multi-tenancy where we have multiple clients hosted in the same instance. Hey, there's a plug-in for that! Easy-peasy.
+
+** Converting to a Single Page Application **
+
+Add AngularJS and Bootstrap to static content of our Grails app.
+
+Use content negotiation...
+
+*** Security ***
+
+302 doesn't work for us, convert to returning 401
+
+[1]: http://grails.org/
+[2]: http://www.springsource.org/sts
+[3]: http://static.springsource.org/spring-security/site/
+[4]: http://shiro.apache.org/
