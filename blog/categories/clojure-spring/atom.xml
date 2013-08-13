@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: clojure spring | <insert witty blog title>]]></title>
+  <link href="http://stevendick.github.com/blog/categories/clojure-spring/atom.xml" rel="self"/>
+  <link href="http://stevendick.github.com/"/>
+  <updated>2013-08-13T11:59:57+02:00</updated>
+  <id>http://stevendick.github.com/</id>
+  <author>
+    <name><![CDATA[Steven Dick]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Write a Spring MVC Controller in Clojure]]></title>
+    <link href="http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure/"/>
+    <updated>2013-08-13T10:36:00+02:00</updated>
+    <id>http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure</id>
+    <content type="html"><![CDATA[<p>Clojure's great fun, but how can I increase its chances of use at work?</p>
+
+<p>From personal experience and feedback from others, I don't see big rewrites of systems being a viable way of introducing new technology; who can take the risk of spending 6 months to simply end up with the same business features again? That doesn't deliver value for the users.</p>
+
+<p>I much more subscribe to the approach of incremental improvement through an approach such as the <a href="www.paulhammant.com/blog/strangulation">strangulation pattern</a>. The question was, could I incrementally introduce Clojure?</p>
+
+<p>The server application I work on is for the operations part of the financial Fund of Fund business; financial transactions, valuations and planning. Its a Java application using Spring MVC to expose the API via HTTP.</p>
+
+<p>I was first thinking I needed to use Clojure's <a href="https://github.com/ring-clojure">Ring library</a> for the HTTP part which then lead me to the <a href="https://github.com/laurentpetit/ring-java-servlet">ring-java-servlet</a> project for adding a new Servlet to our existing web.xml.</p>
+
+<p>Upon reflection, this didn't feel the right way to go. Thinking a bit more, couldn't I write a Spring MVC controller in Clojure?</p>
+
+<p>The short answer is yes!</p>
+
+<p><div><script src='https://gist.github.com/6224664.js?file=spring-mvc-controller.clj'></script>
+<noscript><pre><code>(ns liquidity.controller
+  (:import org.springframework.stereotype.Controller
+            (org.springframework.web.bind.annotation RequestMapping RequestMethod ResponseBody))
+  (:gen-class
+    :name ^{Controller &quot;&quot;} ch.hedgesphere.liquidity.controller.LiquidityController
+    :methods [[^{RequestMapping {:value [&quot;/liquidity&quot;] :method [RequestMethod/GET]} ResponseBody {}} hello [] String]]))
+
+(defn -hello [this]
+  &quot;Hello world from a Clojure-based controller!&quot;)</code></pre></noscript></div>
+</p>
+
+<p>Sorry if the colours appear crappy, but somethings changed with code snippets in Octopress and I want to get the article out rather than delay publishing - I will tidy up afterwords!</p>
+
+<p>We use Spring MVC's annotation-based configuration to find controllers in the application's classpath. This means we need to use Clojure's AOT (Ahead Of Time) compilation so that there is a class to find at start-up time.</p>
+
+<p>This was the first time I've used Clojure's support for generating a class, which wasn't difficult. What was more challanging was getting the annotations correct.</p>
+
+<p>Clojure has support for adding metadata to symbols and collections. This approach is used for adding Java annotations to generated classes and methods. The tricky bit is working out what value to give the annotation (it's a map so every annotation needs a value).</p>
+
+<p>If there's no value for the annotation, you can use an empty map. The empty string given to the Controller annotation is because you can give an optional name.</p>
+
+<p>In Java I'd use a single string to add the URL template to the RequestMapping annotation, but if you read the source code for the annotation you'll notice that it is actually an array. I'm not sure if the ability to add a single string is some syntactic sugar of the Java compiler, but you can't do this from Clojure; you need to make it a list.</p>
+
+<p>For building, I used Leiningen via Eclipse's CounterClockWise Clojure plug-in. You need to remember to tell Leiningen to do the AOT build as well otherwise the gen-class declaration is ignored.</p>
+
+<p>Now I just need to find a new part of the system to implement where choosing Clojure would be the smart thing to do...</p>
+]]></content>
+  </entry>
+  
+</feed>

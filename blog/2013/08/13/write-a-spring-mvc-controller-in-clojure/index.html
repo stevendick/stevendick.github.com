@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Gradle + Groovy + Spock + Windows == argh! - <insert witty blog title></title>
+  <title>Write a Spring MVC Controller in Clojure - <insert witty blog title></title>
   <meta name="author" content="Steven Dick">
 
   
-  <meta name="description" content="We&#8217;ve all experienced the &#8216;pleasure&#8217; of Yak shaving. This is the tale of my most recent one. In porting our build to Gradle we &hellip;">
+  <meta name="description" content="Clojure&#8217;s great fun, but how can I increase its chances of use at work? From personal experience and feedback from others, I don&#8217;t see &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash">
+  <link rel="canonical" href="http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">Gradle + Groovy + Spock + Windows == Argh!</h1>
+      <h1 class="entry-title">Write a Spring MVC Controller in Clojure</h1>
     
     
       <p class="meta">
@@ -83,40 +83,54 @@
   
 
 
-<time datetime="2012-02-05T14:29:00+01:00" pubdate data-updated="true">2012-02-05</time>
+<time datetime="2013-08-13T10:36:00+02:00" pubdate data-updated="true">2013-08-13</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>We&#8217;ve all experienced the &#8216;pleasure&#8217; of <a href="http://en.wiktionary.org/wiki/yak_shaving">Yak shaving</a>. This is the tale of my most recent one.</p>
+<div class="entry-content"><p>Clojure&#8217;s great fun, but how can I increase its chances of use at work?</p>
 
-<p>In porting our build to <a href="http://www.gradle.org">Gradle</a> we recently found we&#8217;d missed one project as part of the multi-project build. Easy, we just add the project to Gradles <code>settings.gradle</code> and all will be well.</p>
+<p>From personal experience and feedback from others, I don&#8217;t see big rewrites of systems being a viable way of introducing new technology; who can take the risk of spending 6 months to simply end up with the same business features again? That doesn&#8217;t deliver value for the users.</p>
 
-<p>Nope.</p>
+<p>I much more subscribe to the approach of incremental improvement through an approach such as the <a href="www.paulhammant.com/blog/strangulation">strangulation pattern</a>. The question was, could I incrementally introduce Clojure?</p>
 
-<p>Another project in the build fails and it has no obvious relation to the newly re-added project. WTF? Some error about <code>groovyc</code> (the Ant task for building Groovy code) has failed.</p>
+<p>The server application I work on is for the operations part of the financial Fund of Fund business; financial transactions, valuations and planning. Its a Java application using Spring MVC to expose the API via HTTP.</p>
 
-<p>A bit of googling shows we&#8217;ve run up against the command line limitation on Windows (8K for XP onwards, only 2K for older versions). Bummer, but we can change the default Gradle behaviour to run the Groovy compilation in-process rather than spawning the compiler from the command line and encountering the problem.</p>
+<p>I was first thinking I needed to use Clojure&#8217;s <a href="https://github.com/ring-clojure">Ring library</a> for the HTTP part which then lead me to the <a href="https://github.com/laurentpetit/ring-java-servlet">ring-java-servlet</a> project for adding a new Servlet to our existing web.xml.</p>
 
-<p>That should work. Nope.</p>
+<p>Upon reflection, this didn&#8217;t feel the right way to go. Thinking a bit more, couldn&#8217;t I write a Spring MVC controller in Clojure?</p>
 
-<p>Now <a href="https://github.com/spockframework/spock">Spock</a> is complaining that we&#8217;ve failed to process the annotations on all tests using Spock. This must be because we&#8217;re running in-process and Spock&#8217;s annotation processor isn&#8217;t on the classpath.</p>
+<p>The short answer is yes!</p>
 
-<p>Maybe adding Spock to Gradle&#8217;s classpath fixes this new problem? Nope.</p>
+<div><script src='https://gist.github.com/6224664.js?file=spring-mvc-controller.clj'></script>
+<noscript><pre><code>(ns liquidity.controller
+  (:import org.springframework.stereotype.Controller
+            (org.springframework.web.bind.annotation RequestMapping RequestMethod ResponseBody))
+  (:gen-class
+    :name ^{Controller &quot;&quot;} ch.hedgesphere.liquidity.controller.LiquidityController
+    :methods [[^{RequestMapping {:value [&quot;/liquidity&quot;] :method [RequestMethod/GET]} ResponseBody {}} hello [] String]]))
 
-<p>OK, back to googling around. <a href="http://stackoverflow.com/questions/5434482/how-can-i-create-a-pathing-jar-in-gradle">Stack Overflow</a> shows a workaround for problems of classpaths that are too long. Basically, replace the long classpath with an empty JAR containing a MANIFEST.MF that defines the real classpath. Sounds easy enough.</p>
+(defn -hello [this]
+  &quot;Hello world from a Clojure-based controller!&quot;)</code></pre></noscript></div>
 
-<p>Does the pathing JAR solve the problem? Nope. The first problem with this solution is the lack of a clear description with examples of how this works. The classpath. The paths should be relative URLs (absolute paths appear to work on Mac OS X, but not Windows) from the point-of-view of the pathing JAR. I did this, but none of my classpath dependencies were found and no obvious reason why.</p>
 
-<p>Argh! Back to Google. I eventually found a recent <a href="http://jira.codehaus.org/browse/GROOVY-5024">bug</a> about the command line length problem with Groovy and a proposed patch (not yet accepted). I also raised a problem with the Gradle guys to see if anyone else could point out a workaround.</p>
+<p>Sorry if the colours appear crappy, but somethings changed with code snippets in Octopress and I want to get the article out rather than delay publishing - I will tidy up afterwords!</p>
 
-<p>After giving it a day and no simple workaround appearing, I decided to try and apply the patch myself and build my own local Groovy. I used the 1.8.5 version of Groovy and manually applied the patch in Eclipse as the patch line numbers didn&#8217;t match up to the source. Groovy recently moved to building with Gradle, so after cleaning up the <code>docs.gradle</code> file (it had diff markings in it, meaning it didn&#8217;t work), I was able to build with Gradle. The build did report an error right at the end, but this was after the<code>groovy</code> and <code>groovy-all</code> JARs were produced, so that wasn&#8217;t a problem.</p>
+<p>We use Spring MVC&#8217;s annotation-based configuration to find controllers in the application&#8217;s classpath. This means we need to use Clojure&#8217;s AOT (Ahead Of Time) compilation so that there is a class to find at start-up time.</p>
 
-<p>Using the locally built Groovy did have one downside: I needed to provide the needed dependencies explicitly rather than relying on the transitive dependencies automatically being resolved, but that&#8217;s a small price to pay.</p>
+<p>This was the first time I&#8217;ve used Clojure&#8217;s support for generating a class, which wasn&#8217;t difficult. What was more challanging was getting the annotations correct.</p>
 
-<p>So at last, the build works and I can leave that particular Yak alone.</p>
+<p>Clojure has support for adding metadata to symbols and collections. This approach is used for adding Java annotations to generated classes and methods. The tricky bit is working out what value to give the annotation (it&#8217;s a map so every annotation needs a value).</p>
+
+<p>If there&#8217;s no value for the annotation, you can use an empty map. The empty string given to the Controller annotation is because you can give an optional name.</p>
+
+<p>In Java I&#8217;d use a single string to add the URL template to the RequestMapping annotation, but if you read the source code for the annotation you&#8217;ll notice that it is actually an array. I&#8217;m not sure if the ability to add a single string is some syntactic sugar of the Java compiler, but you can&#8217;t do this from Clojure; you need to make it a list.</p>
+
+<p>For building, I used Leiningen via Eclipse&#8217;s CounterClockWise Clojure plug-in. You need to remember to tell Leiningen to do the AOT build as well otherwise the gen-class declaration is ignored.</p>
+
+<p>Now I just need to find a new part of the system to implement where choosing Clojure would be the smart thing to do&#8230;</p>
 </div>
 
 
@@ -139,12 +153,12 @@
   
 
 
-<time datetime="2012-02-05T14:29:00+01:00" pubdate data-updated="true">2012-02-05</time>
+<time datetime="2013-08-13T10:36:00+02:00" pubdate data-updated="true">2013-08-13</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gradle/'>Gradle</a>, <a class='category' href='/blog/categories/groovy/'>Groovy</a>, <a class='category' href='/blog/categories/spock/'>Spock</a>, <a class='category' href='/blog/categories/windows/'>Windows</a>
+    <a class='category' href='/blog/categories/clojure-spring/'>clojure spring</a>
   
 </span>
 
@@ -153,7 +167,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/" data-via="stevendick" data-counturl="http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure/" data-via="stevendick" data-counturl="http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure/" >Tweet</a>
   
   
   
@@ -162,10 +176,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/01/22/jacoco-and-gradle/" title="Previous Post: JaCoCo &amp; Gradle">&laquo; JaCoCo &amp; Gradle</a>
+        <a class="basic-alignment left" href="/blog/2012/10/01/angularjs/" title="Previous Post: AngularJS">&laquo; AngularJS</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/02/12/jacoco-and-gradle-part-2/" title="next Post: JaCoCo &amp; Gradle - Part 2">JaCoCo &amp; Gradle - Part 2 &raquo;</a>
       
     </p>
   </footer>
@@ -277,8 +289,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/';
-        var disqus_url = 'http://stevendick.github.com/blog/2012/02/05/gradle-plus-groovy-plus-spock-plus-windows-equals-equals-argh-slash/';
+        var disqus_identifier = 'http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure/';
+        var disqus_url = 'http://stevendick.github.com/blog/2013/08/13/write-a-spring-mvc-controller-in-clojure/';
         var disqus_script = 'embed.js';
       
     (function () {
